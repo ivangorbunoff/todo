@@ -1,0 +1,16 @@
+.fieldsWrapper {
+    margin-top: 20px;
+    border-radius: 5px;
+    background-color: white;
+    padding: 5px;
+}
+
+.clear {
+    display: block;
+    margin-left: auto;
+    height: 20px;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
