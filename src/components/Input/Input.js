@@ -1,60 +1,44 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Input.css';
 
-class Input extends React.Component{
+export default function Input({onAddTask}) {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            enteredTask: '',
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleClick = this.handleClick.bind(this);
-        this.handleKeyDown = this.handleKeyDown.bind(this);
+    const [enteredTask, setEnteredTask] = useState('');
+
+    const handleChange = e => {
+        setEnteredTask(e.target.value);
     }
 
-    handleChange(e) {
-        this.setState({
-            enteredTask: e.target.value,
-        });
-    }
-
-    handleClick() {
-        const task = this.state.enteredTask;
-        if ( task ) {
-            this.addTask(task);
+    const handleClick = () => {
+        if (enteredTask) {
+            addTask(enteredTask);
         }
     }
 
-    handleKeyDown(e) {
+    const handleKeyDown = e => {
         if (e.key === 'Enter') {
-            const task = this.state.enteredTask;
-            if ( task ) {
-                this.addTask(task);
+            if (enteredTask) {
+                addTask(enteredTask);
             }
         }
     }
 
-    addTask(task) {
-        this.props.onAddTask(task);
-        this.setState({enteredTask: ''});
+    const addTask = task => {
+        onAddTask(task);
+        setEnteredTask('');
     }
 
-    render() {
-        return (
-            <>
-                <h1>to-do list</h1>
-                <div className="inputWrapper">
-                    <input autoFocus={true}
-                        type="text"
-                        value={this.state.enteredTask}
-                        onKeyDown={this.handleKeyDown}
-                        onChange={this.handleChange}/>
-                    <input type="submit" value="ADD" onClick={this.handleClick} />
-                </div>
-            </>
-        );
-    }
+    return (
+        <>
+            <h1>to-do list</h1>
+            <div className="inputWrapper">
+                <input autoFocus={true}
+                       type="text"
+                       value={enteredTask}
+                       onKeyDown={handleKeyDown}
+                       onChange={handleChange}/>
+                <input type="submit" value="ADD" onClick={handleClick}/>
+            </div>
+        </>
+    );
 }
-
-export default Input;

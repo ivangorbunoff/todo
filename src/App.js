@@ -1,60 +1,38 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Input from './components/Input/Input';
 import TaskList from './components/TaskList/TaskList';
 
-class App extends React.Component {
+export default function App() {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            taskList: [],
-        };
-        this.handleAddTask = this.handleAddTask.bind(this);
-        this.handleDeleteTask = this.handleDeleteTask.bind(this);
-        this.handleClear = this.handleClear.bind(this);
-        this.handleChecked = this.handleChecked.bind(this);
+    const [taskList, setTasks] = useState([]);
+
+    const handleAddTask = task => {
+        setTasks([...taskList, {task, done: false}]);
     }
 
-    handleAddTask(task) {
-        this.setState({
-            taskList: this.state.taskList.concat([{task, done: false}]),
-        });
+    const handleChecked = index => {
+        const bufferTaskList = [...taskList];
+        bufferTaskList[index].done = !bufferTaskList[index].done;
+        setTasks(bufferTaskList);
     }
 
-    handleChecked(index) {
-        const {taskList} = this.state;
-        taskList[index].done = !taskList[index].done;
-        this.setState({
-            taskList: taskList,
-        });
+    const handleDeleteTask = index => {
+        const bufferTaskList = [...taskList];
+        bufferTaskList.splice(index, 1);
+        setTasks(bufferTaskList);
     }
 
-    handleDeleteTask(index) {
-        const taskList = this.state.taskList.slice();
-        taskList.splice(index, 1);
-        this.setState({
-            taskList: taskList,
-        });
-    }
+    const handleClear = () => setTasks([]);
 
-    handleClear() {
-        this.setState({
-            taskList: [],
-        });
-    }
-
-    render() {
-        return (
-            <div className="appWrapper">
-                <Input onAddTask={this.handleAddTask}/>
-                <TaskList
-                    taskList={this.state.taskList}
-                    onClear={this.handleClear}
-                    onChecked={this.handleChecked}
-                    onDeleteTask={this.handleDeleteTask}/>
-            </div>
-        );
-    }
+    return (
+        <div className="appWrapper">
+            <Input onAddTask={handleAddTask}/>
+            <TaskList
+                taskList={taskList}
+                onClear={handleClear}
+                onChecked={handleChecked}
+                onDeleteTask={handleDeleteTask}/>
+        </div>
+    );
 }
 
-export default App;
