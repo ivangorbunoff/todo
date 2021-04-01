@@ -1,7 +1,50 @@
-import React, {useState} from 'react';
-import './Input.css';
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
 
-export default function Input({onAddTask}) {
+const InputWrapper = styled.div`
+  display: flex;
+  align-content: stretch;
+`
+
+const Title = styled.h1`
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+`
+
+const StyledInput = styled.input.attrs(props => ({
+    type: "text"
+}))`
+  font-family: inherit;
+
+  ${props => props.type === 'text' && css`
+    width: 100%;
+    height: 30px;
+    outline: none;
+    border: none;
+    color: #38473c;
+    font-size: 18px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  `}
+  
+  ${props => props.type === 'submit' && css`
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 0 10px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  `}
+`
+
+const SubmitInput = styled(StyledInput).attrs({
+    type: "submit",
+    value: "ADD"
+})``;
+
+export default function Input({ onAddTask }) {
 
     const [enteredTask, setEnteredTask] = useState('');
 
@@ -30,15 +73,14 @@ export default function Input({onAddTask}) {
 
     return (
         <>
-            <h1>to-do list</h1>
-            <div className="inputWrapper">
-                <input autoFocus={true}
-                       type="text"
+            <Title>to-do list</Title>
+            <InputWrapper>
+                <StyledInput autoFocus={true}
                        value={enteredTask}
                        onKeyDown={handleKeyDown}
                        onChange={handleChange}/>
-                <input type="submit" value="ADD" onClick={handleClick}/>
-            </div>
+                <SubmitInput onClick={handleClick}/>
+            </InputWrapper>
         </>
     );
 }
